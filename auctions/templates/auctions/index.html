@@ -1,7 +1,12 @@
 {% extends "auctions/layout.html" %}
-
+{% load static %}
 {% block body %}
-    <h2>Active Listings</h2>
 
-    TODO
+    <h2 class="heading">Active Listings</h2>
+    <div class="hammer">
+        <div class="line"></div>
+        <img src="{% static 'auctions/Pictures/hammer.png' %}" alt="image">
+        <div class="line"></div>
+    </div>
+    
 {% endblock %}

@@ -1,0 +1,94 @@
+$blue: #2695FF;
+$navtext: #F8FCFF;
+$grey: #CCCCCC;
+// body {
+//     // padding: 10px;
+//     font-family: 'Helvetica Neue';
+// }
+.logo{
+    width: 8rem;
+    height: 6rem;
+    margin: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img{
+        width: 5rem;
+        height: 2rem;
+    }
+}
+.nav-link{
+    color: $navtext;
+}
+.nav-link:hover{
+    color: rgb(241, 234, 234);
+}
+.nav{
+    padding: 0.8rem 2rem;
+}
+.navItem{
+    align-self: flex-start;
+  .nav-link{
+    font-weight: bold;
+  }
+}
+#navbarNav{
+    background-color: $blue;
+    display: flex;
+    justify-content: space-between;
+    .navEnd{
+        padding-right: 4rem;
+    }
+}
+.signedInUser{
+    font-style: italic;
+}
+.heading{
+    margin: 1rem 0rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5rem;
+
+}
+.hammer{
+    
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 1rem;
+    img{
+        height: 40px;
+        width: 40px;
+    }
+}
+.line{
+    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 15rem;
+    height: 2px;
+    background-color: $grey;
+}
+.required{
+    color: red;
+}
+.formContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.form{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.adjustBtn{
+    padding: 0.7rem 5rem;
+}
+.btnDiv{
+    margin: 1rem 0rem;
+    width: 60%;
+}

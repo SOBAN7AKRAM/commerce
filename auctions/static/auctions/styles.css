@@ -1,3 +1,100 @@
-body {
-    padding: 10px;
+.logo {
+  width: 8rem;
+  height: 6rem;
+  margin: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.logo img {
+  width: 5rem;
+  height: 2rem;
+}
+
+.nav-link {
+  color: #F8FCFF;
+}
+
+.nav-link:hover {
+  color: rgb(241, 234, 234);
+}
+
+.nav {
+  padding: 0.8rem 2rem;
+}
+
+.navItem {
+  align-self: flex-start;
+}
+.navItem .nav-link {
+  font-weight: bold;
+}
+
+#navbarNav {
+  background-color: #2695FF;
+  display: flex;
+  justify-content: space-between;
+}
+#navbarNav .navEnd {
+  padding-right: 4rem;
+}
+
+.signedInUser {
+  font-style: italic;
+}
+
+.heading {
+  margin: 1rem 0rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.hammer {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1rem;
+}
+.hammer img {
+  height: 40px;
+  width: 40px;
+}
+
+.line {
+  width: 15rem;
+  height: 2px;
+  background-color: #CCCCCC;
+}
+
+.required {
+  color: red;
+}
+
+.formContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.adjustBtn {
+  padding: 0.7rem 5rem;
+}
+
+.btnDiv {
+  margin: 1rem 0rem;
+  width: 60%;
+}
+
+/*# sourceMappingURL=styles.css.map */
