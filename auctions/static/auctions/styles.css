@@ -1,3 +1,12 @@
+body {
+  width: 100vw;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .logo {
   width: 8rem;
   height: 6rem;
@@ -95,6 +104,91 @@
 .btnDiv {
   margin: 1rem 0rem;
   width: 60%;
+}
+
+.item {
+  height: 30rem;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.item {
+  margin: 2rem 1rem;
+}
+
+.picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60%;
+}
+.picture img {
+  width: 80%;
+  height: 80%;
+}
+
+.title {
+  border-top: 1px solid #CCCCCC;
+  color: #484848;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title p {
+  margin-top: 0.5rem;
+  color: black;
+  font-weight: bold;
+}
+.title p span {
+  color: #2695FF;
+  font-weight: normal;
+}
+.title h4:hover {
+  cursor: pointer;
+  color: #2695FF;
+}
+
+.description {
+  height: 6rem;
+  overflow: hidden;
+  padding: 0rem 1rem;
+  text-align: justify;
+}
+
+.aHover {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.itemContainer {
+  margin: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.itemContainer .picture {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 20rem;
+  width: 30rem;
+}
+.itemContainer .picture img {
+  width: 90%;
+  height: 90%;
+  border-radius: 1rem;
+}
+.itemContainer .description {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 100%;
+}
+.itemContainer .description h3 {
+  margin-top: 1rem;
+}
+
+.btnWatch {
+  margin-left: 2rem;
 }
 
 /*# sourceMappingURL=styles.css.map */

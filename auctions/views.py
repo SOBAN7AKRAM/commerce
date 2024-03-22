@@ -12,7 +12,9 @@ from .models import User
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        'auctionlist' : AuctionListing.objects.all(), 
+    })
 
 
 def login_view(request):
@@ -70,11 +72,31 @@ class createListingForm(forms.Form):
     
     
 def createListing(request):
+    if request.method == "POST":
+        form = createListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            initialBid = form.cleaned_data["initialBid"]
+            picture = form.cleaned_data["picture"]
+            category = form.cleaned_data["category"]
+            if User.is_authenticated:
+                ac = AuctionListing(title=title, description=description, initialBid=initialBid, image=picture, category=category, owner = request.user)
+                ac.save()
+                return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'auctions/create.html', {
+                'form' : form
+            })
     form = createListingForm(label_suffix='')
     return render(request, "auctions/create.html", {
         'form': form,
     })
-
+def viewItem(request, Id):
+    ac = AuctionListing.objects.get(id=Id)
+    return render(request, 'auctions/item.html', {
+        'auctionList': ac
+    })
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]

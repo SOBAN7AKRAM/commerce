@@ -1,0 +1,20 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+    <h2 class="heading">Listing: {{auctionList.title}}</h2>
+    {% if request.user.is_authenticated %}
+    <button class="btn btn-outline-primary btnWatch">Add To WatchList</button>
+    <button class="btn btn-outline-warning btnWatch">Remove from WatchList</button>
+    {% endif %}
+    <div class="itemContainer">
+        <div class="picture">
+            {% if auctionList.image %}
+            <img src="{{auctionList.image.url}}" alt="image">
+            {% endif %}
+        </div>
+        <div class="description">
+            <h3>Description</h3>
+            {{auctionList.description}}
+        </div>
+    </div>
+
+{% endblock%}

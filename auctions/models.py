@@ -15,11 +15,11 @@ class AuctionListing(models.Model):
         none = '', _('None')
     title = models.CharField(max_length=64)
     description = models.TextField()
-    image = models.ImageField(blank=True)
+    image = models.ImageField(default='', upload_to='images/')
     initialBid = models.IntegerField(default = 0)
     category = models.CharField(max_length=64, choices = categories, default = categories.none, blank = True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "owner")
-    
+    watchList = models.ManyToManyField(User, default='', related_name="watchList")
     def __str__(self):
         return f"{self.title}"
 
