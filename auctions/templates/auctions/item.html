@@ -7,16 +7,16 @@
         <img src="{% static 'auctions/Pictures/hammer.png' %}" alt="image">
         <div class="line"></div>
     </div>
-    {% if request.user.is_authenticated %}
+    
     <form action="{% url 'watchList' auctionList.id%}" method="post">
         {% csrf_token %}
         {% if isWatchListItem %}
         <input type="submit" class="btn btn-outline-alert btnWatch" value="Remove from WatchList"></input>
         {% else %}
             <input type="submit" class="btn btn-outline-primary btnWatch" value="Add To WatchList"></input>
-            {% endif %}
+        {% endif %}
     </form>
-    {% endif %}
+   
     <div class="itemContainer">
         <div class="picture">
             {% if auctionList.image %}

@@ -25,11 +25,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
             </li>
-            {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'watch' %}">WatchList</a>
             </li>
-            {% endif %}
 
         </ul>
         <ul class="nav navEnd">

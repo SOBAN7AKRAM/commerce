@@ -7,7 +7,7 @@ from django.urls import reverse
 from django import forms
 from django.utils.safestring import mark_safe
 from django.core.validators import MinValueValidator
-
+from django.contrib.auth.decorators import login_required
 from .models import User
 
 
@@ -70,7 +70,7 @@ class createListingForm(forms.Form):
     initialBid.widget.attrs.update({'class': 'form-control', 'placeholder': "Initial Bid"})
     picture.widget.attrs.update({'class': 'form-control'})
     
-    
+@login_required(login_url='login')
 def createListing(request):
     if request.method == "POST":
         form = createListingForm(request.POST, request.FILES)
@@ -95,18 +95,16 @@ def createListing(request):
 def viewItem(request, Id):
     ac = AuctionListing.objects.get(id=Id)
     flag = True
-    try:
-        wc = WatchList.objects.get(watchUser = request.user)
-    except WatchList.DoesNotExist:
-        flag = False
-    # wc, created = WatchList.objects.get_or_create(watchUser = request.user)
-    # if wc.products.contains(ac):
-    #     flag = True
-    # else:
-    #     flag = False
-    if flag:
-        if not wc.products.contains(ac):
+    if request.user.is_authenticated:
+        try:
+            wc = WatchList.objects.get(watchUser = request.user)
+        except WatchList.DoesNotExist:
             flag = False
+        if flag:
+            if not wc.products.contains(ac):
+                flag = False
+    else:
+        flag = False
     return render(request, 'auctions/item.html', {
         'auctionList': ac, 
         'isWatchListItem' : flag
@@ -137,7 +135,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-
+@login_required(login_url='login')
 def addOrRemoveToWatchList(request, Id):
     wc, created = WatchList.objects.get_or_create(watchUser = request.user)
     if request.method == "POST" and request.user.is_authenticated:
@@ -156,6 +154,7 @@ def addOrRemoveToWatchList(request, Id):
         'products': products,
         'isEmpty' : len(products) == 0
     })
+@login_required(login_url='login')
 def viewWatchList(request):
     flag = True
     try:
