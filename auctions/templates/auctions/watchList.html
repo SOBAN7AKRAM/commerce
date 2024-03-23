@@ -1,0 +1,41 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+{% block body %}
+
+{% if isEmpty %}
+<div class="alert alert-info" role="alert">
+    There is no Item in your watch List
+</div>
+{% else %}
+<h2 class="heading">WatchList</h2>
+<div class="hammer">
+    <div class="line"></div>
+    <img src="{% static 'auctions/Pictures/hammer.png' %}" alt="image">
+    <div class="line"></div>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row justify-content-md-center">
+    {% for list in products %}
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="item">
+                    <a class="aHover" href="{% url 'item' list.id%}">
+                    <div class="picture">
+                        {% if list.image %}
+                        <img src="{{list.image.url}}" alt="image">
+                        {% endif %}
+                    </div>
+                    <div class="title">
+                        <h4>{{list.title}}</h4>
+                    </a>
+                    <div class="description">
+                        {{list.description}}
+                    </div>
+                    <p>Price: <span>{{list.initialBid}}$</span></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    </div>
+{% endblock %}

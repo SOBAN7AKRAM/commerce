@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from . models import AuctionListing, Bid, Comments
+from . models import AuctionListing, Bid, Comments, WatchList
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -94,8 +94,22 @@ def createListing(request):
     })
 def viewItem(request, Id):
     ac = AuctionListing.objects.get(id=Id)
+    flag = True
+    try:
+        wc = WatchList.objects.get(watchUser = request.user)
+    except WatchList.DoesNotExist:
+        flag = False
+    # wc, created = WatchList.objects.get_or_create(watchUser = request.user)
+    # if wc.products.contains(ac):
+    #     flag = True
+    # else:
+    #     flag = False
+    if flag:
+        if not wc.products.contains(ac):
+            flag = False
     return render(request, 'auctions/item.html', {
-        'auctionList': ac
+        'auctionList': ac, 
+        'isWatchListItem' : flag
     })
 def register(request):
     if request.method == "POST":
@@ -122,3 +136,37 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def addOrRemoveToWatchList(request, Id):
+    wc, created = WatchList.objects.get_or_create(watchUser = request.user)
+    if request.method == "POST" and request.user.is_authenticated:
+        ac = AuctionListing.objects.get(id=Id)
+        if wc.products.contains(ac):
+            wc.products.remove(ac)
+            return HttpResponseRedirect(reverse("item",kwargs={'Id': Id}))
+        else:
+            wc.products.add(ac)
+        wc.save()
+    if (wc):
+            products = wc.products.all()
+    else:
+            products =[]
+    return render(request, 'auctions/watchList.html', {
+        'products': products,
+        'isEmpty' : len(products) == 0
+    })
+def viewWatchList(request):
+    flag = True
+    try:
+        wc = WatchList.objects.get(watchUser = request.user)
+    except WatchList.DoesNotExist:
+        flag = False
+    if flag:
+        products = wc.products.all()
+    else:
+        products = []
+    return render(request, 'auctions/watchList.html', {
+        'products': products,
+        'isEmpty' : len(products) == 0
+    })

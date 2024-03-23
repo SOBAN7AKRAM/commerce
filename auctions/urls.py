@@ -9,6 +9,8 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"), 
     path("createListing", views.createListing, name="create"),
-    path("item/<int:Id>/", views.viewItem, name="item")
+    path("item/<int:Id>/", views.viewItem, name="item"), 
+    path("watchList/<int:Id>/", views.addOrRemoveToWatchList, name="watchList"),
+    path("watchList", views.viewWatchList, name = "watch")
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

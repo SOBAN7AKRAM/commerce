@@ -19,7 +19,6 @@ class AuctionListing(models.Model):
     initialBid = models.IntegerField(default = 0)
     category = models.CharField(max_length=64, choices = categories, default = categories.none, blank = True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "owner")
-    watchList = models.ManyToManyField(User, default='', related_name="watchList")
     def __str__(self):
         return f"{self.title}"
 
@@ -37,3 +36,6 @@ class Comments(models.Model):
     commentor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "commentor")
     def __str__(self):
         return f"{self.commentor} comment '{self.Comment}' on {self.commentedOn.title}" 
+class WatchList(models.Model):
+    watchUser = models.ForeignKey(User,on_delete = models.CASCADE)
+    products = models.ManyToManyField(AuctionListing)
