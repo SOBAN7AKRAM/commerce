@@ -8,25 +8,45 @@
         <div class="line"></div>
     </div>
     
-    <form action="{% url 'watchList' auctionList.id%}" method="post">
+    <form class="inline" action="{% url 'watchList' auctionList.id%}" method="post">
         {% csrf_token %}
         {% if isWatchListItem %}
-        <input type="submit" class="btn btn-outline-alert btnWatch" value="Remove from WatchList"></input>
+        <input type="submit" class="btn btn-outline-danger btnWatch" value="Remove from WatchList"></input>
         {% else %}
             <input type="submit" class="btn btn-outline-primary btnWatch" value="Add To WatchList"></input>
         {% endif %}
     </form>
-   
-    <div class="itemContainer">
-        <div class="picture">
+    {% if isOwner and auctionList.isActive %}
+        <form class="inline" action="{% url 'item' auctionList.id%}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-outline-warning" value="Close Biding">
+        </form>
+    {% endif %}
+        <div class="picContainer">
             {% if auctionList.image %}
             <img src="{{auctionList.image.url}}" alt="image">
             {% endif %}
         </div>
-        <div class="description">
+        <div class="desc">
             <h3>Description</h3>
             {{auctionList.description}}
         </div>
-    </div>
-
+        <div class="price">
+           Current Bid : {{auctionList.initialBid}}$
+        </div>
+        {% if auctionList.isActive and not isOwner%}
+        <form class="bidForm" action="{% url 'item' auctionList.id%}" method="post">
+            <input type="number" name="bidInput" class="form-control" placeholder="Bid" min="{{auctionList.initialBid}}">
+            <input type="submit" class="btn btn-primary" value="Place Bid">
+        </form>
+        {% endif %}
+        <div class="detail">
+            <h3>Details</h3>
+            <ul>
+                <li>Listed by: <span>{{auctionList.owner.username}}</span></li>
+                <li>Category: <span>{{auctionList.get_category_full_name}}</span></li>
+                <li>Initial Bid: <span>{{auctionList.initialBid}}$</span></li>
+                <li>Listing Status: <span>{{status}}</span></li>
+            </ul>
+        </div>
 {% endblock%}

@@ -19,8 +19,11 @@ class AuctionListing(models.Model):
     initialBid = models.IntegerField(default = 0)
     category = models.CharField(max_length=64, choices = categories, default = categories.none, blank = True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "owner")
+    isActive = models.BooleanField(default=True)
     def __str__(self):
         return f"{self.title}"
+    def get_category_full_name(self):
+       return self.get_category_display()
 
 class Bid(models.Model):
     bidOn = models.ForeignKey(AuctionListing, on_delete = models.CASCADE, related_name = "bidOn")

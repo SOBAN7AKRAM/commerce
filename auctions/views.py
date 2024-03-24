@@ -92,8 +92,18 @@ def createListing(request):
     return render(request, "auctions/create.html", {
         'form': form,
     })
+def isOwner(request, ac):
+    if request.user.is_authenticated:
+        if request.user == ac.owner:
+            return True
+    return False
+def getStatus(ac):
+    if ac.isActive:
+        return "Open"
+    return "Closed"
 def viewItem(request, Id):
     ac = AuctionListing.objects.get(id=Id)
+    # To Check if item is in user watchlist or not
     flag = True
     if request.user.is_authenticated:
         try:
@@ -105,9 +115,22 @@ def viewItem(request, Id):
                 flag = False
     else:
         flag = False
+    Owner = isOwner(request, ac)
+    if request.method == "POST" and isOwner:
+        ac.isActive=False
+        ac.save()
+    elif request.method == "POST":
+        # newBid = request.post["bidInput"]
+        # bid = Bid.objects.get(bidOn = ac)
+        # bid.add()
+        pass
+        
+        
     return render(request, 'auctions/item.html', {
         'auctionList': ac, 
-        'isWatchListItem' : flag
+        'isWatchListItem' : flag,
+        'isOwner' : Owner,
+        'status' : getStatus(ac)
     })
 def register(request):
     if request.method == "POST":
