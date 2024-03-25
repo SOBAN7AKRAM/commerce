@@ -1,10 +1,12 @@
 from django.urls import path
 from django.conf import settings
 from . import views
+from django.contrib import admin
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-
+app_name = 'auctions'
 urlpatterns = [
+    path("admin/", admin.site.urls),
     path("", views.index, name="index"),
     path("login", views.login_view,name="login"),
     path("logout", views.logout_view, name="logout"),
@@ -14,6 +16,6 @@ urlpatterns = [
     path("watchList/<int:Id>/", views.addOrRemoveToWatchList, name="watchList"),
     path("watchList", views.viewWatchList, name = "watch"),
     path("categories", views.categoriesList, name="categories"), 
-    path("<str:name>", views.showCategoryItems, name="category")
+    path("category/<str:name>", views.showCategoryItems, name="category")
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

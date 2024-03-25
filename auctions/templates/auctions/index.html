@@ -13,7 +13,7 @@
     {% for list in auctionlist %}
         <div class="col-12 col-sm-6 col-md-4">
             <div class="item">
-                    <a class="aHover" href="{% url 'item' list.id%}">
+                    <a class="aHover" href="{% url 'auctions:item' list.id%}">
                     <div class="picture">
                         {% if list.image %}
                         <img src="{{list.image.url}}" alt="image">

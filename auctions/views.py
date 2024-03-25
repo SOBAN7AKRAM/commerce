@@ -29,7 +29,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("auctions:index"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
@@ -40,7 +40,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("auctions:index"))
 
 class createListingForm(forms.Form):
     title = forms.CharField(
@@ -71,7 +71,7 @@ class createListingForm(forms.Form):
     initialBid.widget.attrs.update({'class': 'form-control', 'placeholder': "Initial Bid"})
     picture.widget.attrs.update({'class': 'form-control'})
     
-@login_required(login_url='login')
+@login_required(login_url='auctions:login')
 def createListing(request):
     if request.method == "POST":
         form = createListingForm(request.POST, request.FILES)
@@ -84,7 +84,7 @@ def createListing(request):
             if User.is_authenticated:
                 ac = AuctionListing(title=title, description=description, initialBid=initialBid, image=picture, category=category, owner = request.user)
                 ac.save()
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('auctions:index'))
         else:
             return render(request, 'auctions/create.html', {
                 'form' : form
@@ -201,18 +201,18 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("auctions:index"))
     else:
         return render(request, "auctions/register.html")
 
-@login_required(login_url='login')
+@login_required(login_url='auctions:login')
 def addOrRemoveToWatchList(request, Id):
     wc, created = WatchList.objects.get_or_create(watchUser = request.user)
     if request.method == "POST" and request.user.is_authenticated:
         ac = AuctionListing.objects.get(id=Id)
         if wc.products.contains(ac):
             wc.products.remove(ac)
-            return HttpResponseRedirect(reverse("item",kwargs={'Id': Id}))
+            return HttpResponseRedirect(reverse("auctions:item",kwargs={'Id': Id}))
         else:
             wc.products.add(ac)
         wc.save()
@@ -224,7 +224,7 @@ def addOrRemoveToWatchList(request, Id):
         'products': products,
         'isEmpty' : len(products) == 0
     })
-@login_required(login_url='login')
+@login_required(login_url='auctions:login')
 def viewWatchList(request):
     flag = True
     try:

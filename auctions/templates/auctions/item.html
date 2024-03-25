@@ -8,7 +8,7 @@
         <div class="line"></div>
     </div>
     
-    <form class="inline" action="{% url 'watchList' auctionList.id%}" method="post">
+    <form class="inline" action="{% url 'auctions:watchList' auctionList.id%}" method="post">
         {% csrf_token %}
         {% if isWatchListItem %}
         <input type="submit" class="btn btn-outline-danger btnWatch" value="Remove from WatchList"></input>
@@ -17,7 +17,7 @@
         {% endif %}
     </form>
     {% if isOwner and auctionList.isActive %}
-        <form class="inline" action="{% url 'item' auctionList.id%}" method="post">
+        <form class="inline" action="{% url 'auctions:item' auctionList.id%}" method="post">
             {% csrf_token %}
             <input type="submit" class="btn btn-outline-warning" value="Close Biding">
         </form>
@@ -51,7 +51,7 @@
         </div>
         {% endif %}
         {% if auctionList.isActive and not isOwner%}
-        <form class="bidForm" action="{% url 'item' auctionList.id%}" method="post">
+        <form class="bidForm" action="{% url 'auctions:item' auctionList.id%}" method="post">
             {% csrf_token %}
             <input type="number" name="bidInput" class="form-control" placeholder="Bid" min="{{highestBid}}">
             <input type="submit" class="btn btn-primary" value="Place Bid">
@@ -68,7 +68,7 @@
             </ul>
         </div>
         <h2 class="heading">Comments Section</h2>
-        <form class="bidForm" action="{%url 'item' auctionList.id%}" method="post">
+        <form class="bidForm" action="{%url 'auctions:item' auctionList.id%}" method="post">
             {% csrf_token %}
             {{ commentForm }}
             <input type="submit" name="comment_submit" class="btn btn-primary" value="Comment">
