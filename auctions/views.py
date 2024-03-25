@@ -110,6 +110,14 @@ def isWinner(request, noOfBids, ac, highestBid):
                 if winner.first().buyer == request.user:
                     return True
     return False 
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Write your comment here...'}),
+        required=False,
+        label='',
+        error_messages={'required': ''}
+    )
+    comment.widget.attrs.update(required = True)
 def viewItem(request, Id):
     ac = AuctionListing.objects.get(id=Id)
     highestBid = Bid.objects.filter(bidOn = ac).aggregate(Max('bid'))['bid__max']
@@ -117,6 +125,7 @@ def viewItem(request, Id):
     noOfBids = Bid.objects.filter(bidOn = ac).count()
     flag = True
     message = None
+    form = CommentForm(request.POST)
     if request.user.is_authenticated:
         try:
             wc = WatchList.objects.get(watchUser = request.user)
@@ -132,18 +141,32 @@ def viewItem(request, Id):
         ac.isActive=False
         ac.save()
     elif request.method == "POST":
-        newBid = int(request.POST["bidInput"])
-        if (highestBid is None or newBid > highestBid) and newBid > ac.initialBid:
-            newObj = Bid.objects.create(bidOn = ac, bid = newBid, buyer = request.user)
-            highestBid = newBid
-            noOfBids += 1
-            newObj.save()
+        if not request.user.is_authenticated:
+            return render(request, 'auctions/login.html')
+        if 'comment_submit' in request.POST:
+            if form.is_valid():
+                comment = form.cleaned_data["comment"]
+                if request.user.is_authenticated:
+                    commentModel = Comments(commentedOn = ac, Comment = comment, commentor = request.user)
+                    commentModel.save()
         else:
-            message = "Your bid Should be greater than current bid"
+            newBid = int(request.POST["bidInput"])
+            if (highestBid is None or newBid > highestBid) and newBid > ac.initialBid:
+                newObj = Bid.objects.create(bidOn = ac, bid = newBid, buyer = request.user)
+                highestBid = newBid
+                noOfBids += 1
+                newObj.save()
+            else:
+                message = "Your bid Should be greater than current bid"
+        
         
     if highestBid is None:
         highestBid = ac.initialBid  
-        
+    getComments = None
+    try:
+        getComments = Comments.objects.filter(commentedOn = ac).all()
+    except Comments.DoesNotExist:
+        pass
     return render(request, 'auctions/item.html', {
         'auctionList': ac, 
         'isWatchListItem' : flag,
@@ -152,7 +175,9 @@ def viewItem(request, Id):
         'highestBid' : highestBid,
         'noOfBids': noOfBids,
         'message' : message, 
-        'isWinner': isWinner(request, noOfBids, ac, highestBid)
+        'isWinner': isWinner(request, noOfBids, ac, highestBid),
+        'comments': getComments,
+        'commentForm' : form
     })
 def register(request):
     if request.method == "POST":

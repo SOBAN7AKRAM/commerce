@@ -67,4 +67,22 @@
                 <li>Listing Status: <span>{{status}}</span></li>
             </ul>
         </div>
+        <h2 class="heading">Comments Section</h2>
+        <form class="bidForm" action="{%url 'item' auctionList.id%}" method="post">
+            {% csrf_token %}
+            {{ commentForm }}
+            <input type="submit" name="comment_submit" class="btn btn-primary" value="Comment">
+        </form>
+        {% if comments %}
+        <div class="commentContainer">
+            {% for comment in comments %}
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">{{comment.commentor}}</h5>
+                  <p class="card-text">{{comment.Comment}}</p>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 {% endblock%}
