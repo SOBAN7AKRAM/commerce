@@ -222,4 +222,19 @@ body {
   margin: 0rem 2rem;
 }
 
+.list-group {
+  margin-top: 2rem;
+}
+
+.listItem {
+  padding: 1rem 1rem;
+  color: #2695FF;
+}
+
+.listItem:hover {
+  background-color: #CFF4FC;
+  cursor: pointer;
+  color: black;
+}
+
 /*# sourceMappingURL=styles.css.map */

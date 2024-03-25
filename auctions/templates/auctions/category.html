@@ -1,0 +1,28 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+    <h1 class="heading">Category: {{category}}</h1>
+    <div class="container">
+        <div class="row justify-content-md-center">
+        {% for list in auctionlist %}
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="item">
+                        <a class="aHover" href="{% url 'item' list.id%}">
+                        <div class="picture">
+                            {% if list.image %}
+                            <img src="{{list.image.url}}" alt="image">
+                            {% endif %}
+                        </div>
+                        <div class="title">
+                            <h4>{{list.title}}</h4>
+                        </a>
+                        <div class="description">
+                            {{list.description}}
+                        </div>
+                        <p>Price: <span>{{list.initialBid}}$</span></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        </div>
+{% endblock %}

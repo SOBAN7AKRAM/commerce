@@ -239,3 +239,28 @@ def viewWatchList(request):
         'products': products,
         'isEmpty' : len(products) == 0
     })
+    
+def categoriesList(request):
+    categories = [category for _, category in AuctionListing.categories.choices]
+    categories.remove('None')
+    return render(request, 'auctions/categories.html', {
+        'categories': categories
+    })
+def showCategoryItems(request, name):
+    cat = extractCategory(name)
+    ac = AuctionListing.objects.filter(category = cat).all()
+    return render(request, 'auctions/category.html', {
+        'category': name, 
+        'auctionlist': ac
+    })
+def extractCategory(name):
+    if name == 'Fashion':
+        return 'Fsh'
+    elif name == 'Toys':
+        return 'Ty'
+    elif name == 'Electronics':
+        return 'Elec'
+    elif name == 'Books':
+        return 'Book'
+    elif name == 'Sports':
+        return 'sports'

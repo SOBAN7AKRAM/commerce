@@ -197,3 +197,15 @@ body {
 .commentContainer{
     margin: 0rem 2rem;
 }
+.list-group{
+    margin-top: 2rem;
+}
+.listItem{
+    padding: 1rem 1rem;
+    color: $blue;
+}
+.listItem:hover{
+    background-color: #CFF4FC;
+    cursor: pointer;
+    color: black;
+}
