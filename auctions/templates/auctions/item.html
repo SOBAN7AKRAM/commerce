@@ -32,11 +32,28 @@
             {{auctionList.description}}
         </div>
         <div class="price">
-           Current Bid : {{auctionList.initialBid}}$
+           Current Bid :
+           {% if highestBid %} 
+           {{highestBid}}$
+           {% else %}
+           {{auctionList.initialBid}}$
+           {% endif %}
+
         </div>
+        {% if message %}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+        {% endif %}
+        {% if isWinner %}
+        <div class="alert alert-success">
+            Congratulation! You Won The Auction.
+        </div>
+        {% endif %}
         {% if auctionList.isActive and not isOwner%}
         <form class="bidForm" action="{% url 'item' auctionList.id%}" method="post">
-            <input type="number" name="bidInput" class="form-control" placeholder="Bid" min="{{auctionList.initialBid}}">
+            {% csrf_token %}
+            <input type="number" name="bidInput" class="form-control" placeholder="Bid" min="{{highestBid}}">
             <input type="submit" class="btn btn-primary" value="Place Bid">
         </form>
         {% endif %}
@@ -46,6 +63,7 @@
                 <li>Listed by: <span>{{auctionList.owner.username}}</span></li>
                 <li>Category: <span>{{auctionList.get_category_full_name}}</span></li>
                 <li>Initial Bid: <span>{{auctionList.initialBid}}$</span></li>
+                <li>Total no(s) of Bid(s): <span>{{noOfBids}}</span></li>
                 <li>Listing Status: <span>{{status}}</span></li>
             </ul>
         </div>

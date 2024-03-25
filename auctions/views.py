@@ -8,6 +8,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.core.validators import MinValueValidator
 from django.contrib.auth.decorators import login_required
+from django.db.models import Max
 from .models import User
 
 
@@ -101,10 +102,21 @@ def getStatus(ac):
     if ac.isActive:
         return "Open"
     return "Closed"
+def isWinner(request, noOfBids, ac, highestBid):
+    if request.user.is_authenticated and ac.isActive == False and isOwner(request, ac) == False:
+        if noOfBids != 0:
+            winner = Bid.objects.filter(bidOn = ac, bid = highestBid)
+            if winner is not None:
+                if winner.first().buyer == request.user:
+                    return True
+    return False 
 def viewItem(request, Id):
     ac = AuctionListing.objects.get(id=Id)
+    highestBid = Bid.objects.filter(bidOn = ac).aggregate(Max('bid'))['bid__max']
     # To Check if item is in user watchlist or not
+    noOfBids = Bid.objects.filter(bidOn = ac).count()
     flag = True
+    message = None
     if request.user.is_authenticated:
         try:
             wc = WatchList.objects.get(watchUser = request.user)
@@ -116,21 +128,31 @@ def viewItem(request, Id):
     else:
         flag = False
     Owner = isOwner(request, ac)
-    if request.method == "POST" and isOwner:
+    if request.method == "POST" and Owner:
         ac.isActive=False
         ac.save()
     elif request.method == "POST":
-        # newBid = request.post["bidInput"]
-        # bid = Bid.objects.get(bidOn = ac)
-        # bid.add()
-        pass
+        newBid = int(request.POST["bidInput"])
+        if (highestBid is None or newBid > highestBid) and newBid > ac.initialBid:
+            newObj = Bid.objects.create(bidOn = ac, bid = newBid, buyer = request.user)
+            highestBid = newBid
+            noOfBids += 1
+            newObj.save()
+        else:
+            message = "Your bid Should be greater than current bid"
         
+    if highestBid is None:
+        highestBid = ac.initialBid  
         
     return render(request, 'auctions/item.html', {
         'auctionList': ac, 
         'isWatchListItem' : flag,
         'isOwner' : Owner,
-        'status' : getStatus(ac)
+        'status' : getStatus(ac),
+        'highestBid' : highestBid,
+        'noOfBids': noOfBids,
+        'message' : message, 
+        'isWinner': isWinner(request, noOfBids, ac, highestBid)
     })
 def register(request):
     if request.method == "POST":
