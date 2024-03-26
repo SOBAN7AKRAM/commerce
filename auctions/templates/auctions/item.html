@@ -1,5 +1,8 @@
 {% extends 'auctions/layout.html' %}
 {% load static %}
+{% block title %}
+    {{auctionList.title}}-Listing
+{% endblock %}
 {% block body %}
     <h2 class="heading">Listing: {{auctionList.title}}</h2>
     <div class="hammer">

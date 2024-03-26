@@ -1,4 +1,8 @@
 {% extends 'auctions/layout.html' %}
+{% load static %}
+{% block title %}
+    Category-{{category}}
+{% endblock %}
 {% block body %}
     <h1 class="heading">Category: {{category}}</h1>
     <div class="container">

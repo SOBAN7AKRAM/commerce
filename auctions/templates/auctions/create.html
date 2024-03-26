@@ -1,5 +1,8 @@
 {% extends 'auctions/layout.html' %}
 {% load static %}
+{% block title %}
+    Create Listing
+{% endblock %}
 {% block body %}
     <h2 class="heading">Create Listing</h2>
     <form action="{% url 'auctions:create' %}" enctype="multipart/form-data" method="post">
